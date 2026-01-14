@@ -1,7 +1,6 @@
 'use client';
 
-export const dynamic = 'force-dynamic';
-
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 type LoadType = 'decision' | 'cognitive' | 'emotional';
@@ -117,27 +116,24 @@ const CHANGE_THE_MATH_COPY: Record<LoadType, VariantGroup> = {
 
 export default function BreakdownPage() {
   const params = useSearchParams();
-  const raw = params.get('data');
+  const [data, setData] = useState<ResultData | null>(null);
 
-  if (!raw) {
+  useEffect(() => {
+    const raw = params.get('data');
+    if (!raw) return;
+
+    try {
+      setData(JSON.parse(raw));
+    } catch {
+      setData(null);
+    }
+  }, [params]);
+
+  if (!data) {
     return (
       <div className="page">
         <main>
-          <p>No breakdown data found.</p>
-        </main>
-      </div>
-    );
-  }
-
-  let data: ResultData;
-
-  try {
-    data = JSON.parse(raw);
-  } catch {
-    return (
-      <div className="page">
-        <main>
-          <p>Invalid breakdown data.</p>
+          <p>Loading breakdown…</p>
         </main>
       </div>
     );
