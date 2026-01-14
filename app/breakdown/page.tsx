@@ -1,4 +1,5 @@
 export const dynamic = 'force-dynamic';
+
 'use client';
 
 import { useSearchParams } from 'next/navigation';
@@ -128,9 +129,24 @@ export default function BreakdownPage() {
     );
   }
 
-  const data: ResultData = JSON.parse(raw);
+  let data: ResultData;
+
+  try {
+    data = JSON.parse(raw);
+  } catch {
+    return (
+      <div className="page">
+        <main>
+          <p>Invalid breakdown data.</p>
+        </main>
+      </div>
+    );
+  }
+
   const group = CHANGE_THE_MATH_COPY[data.dominant];
-  const change = group[data.secondary] ?? group.default;
+
+  const change: ChangeBlock =
+    group[data.secondary as keyof VariantGroup] ?? group.default;
 
   return (
     <div className="page">

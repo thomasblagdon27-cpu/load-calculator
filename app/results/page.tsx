@@ -1,4 +1,5 @@
 export const dynamic = 'force-dynamic';
+
 'use client';
 
 import { useSearchParams } from 'next/navigation';
@@ -18,7 +19,7 @@ type ResultData = {
    Scoring Logic
 ------------------------------ */
 function calculateScore(answers: Answers): ResultData {
-  const q = (id: string) => Number(answers[id] || 0);
+  const q = (id: string) => Number(answers[id] ?? 0);
 
   const decision = (q('q1') / 3) * 100;
 
@@ -97,10 +98,22 @@ export default function ResultsPage() {
     );
   }
 
-  const answers: Answers = JSON.parse(raw);
+  let answers: Answers;
+
+  try {
+    answers = JSON.parse(raw);
+  } catch {
+    return (
+      <div className="page">
+        <main>
+          <p>Invalid results data.</p>
+        </main>
+      </div>
+    );
+  }
+
   const result = calculateScore(answers);
-  const summary =
-    RESULT_COPY[result.dominant][result.severity];
+  const summary = RESULT_COPY[result.dominant][result.severity];
 
   return (
     <div className="page">
@@ -112,7 +125,7 @@ export default function ResultsPage() {
         </p>
 
         <p className="subtle section--tight">
-          Primary load: <strong>{result.dominant}</strong> ·
+          Primary load: <strong>{result.dominant}</strong> ·{' '}
           Current intensity: <strong>{result.severity}</strong>
         </p>
 
