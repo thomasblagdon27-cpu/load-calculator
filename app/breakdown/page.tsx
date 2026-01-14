@@ -1,6 +1,6 @@
-export const dynamic = 'force-dynamic';
-
 'use client';
+
+export const dynamic = 'force-dynamic';
 
 import { useSearchParams } from 'next/navigation';
 
@@ -144,8 +144,7 @@ export default function BreakdownPage() {
   }
 
   const group = CHANGE_THE_MATH_COPY[data.dominant];
-
-  const change: ChangeBlock =
+  const change =
     group[data.secondary as keyof VariantGroup] ?? group.default;
 
   return (
@@ -163,23 +162,6 @@ export default function BreakdownPage() {
         <p>
           <strong>{LOAD_LABELS[data.dominant]}</strong> is currently the largest contributor to your overall load.
         </p>
-
-        <hr />
-
-        <h2>Severity Context</h2>
-        <p>
-          Your current load level is classified as <strong>{data.severity}</strong>.
-        </p>
-
-        {data.recovery && (
-          <>
-            <hr />
-            <h2>Recovery Impact</h2>
-            <p>
-              Limited recovery between obligations is amplifying your load.
-            </p>
-          </>
-        )}
 
         <hr />
 

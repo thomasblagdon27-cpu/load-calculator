@@ -1,6 +1,6 @@
-export const dynamic = 'force-dynamic';
-
 'use client';
+
+export const dynamic = 'force-dynamic';
 
 import { useSearchParams } from 'next/navigation';
 
@@ -60,9 +60,6 @@ function calculateScore(answers: Answers): ResultData {
   };
 }
 
-/* -----------------------------
-   Snapshot Copy
------------------------------- */
 const RESULT_COPY: Record<
   LoadType,
   Record<'low' | 'moderate' | 'high', string>
@@ -120,9 +117,7 @@ export default function ResultsPage() {
       <main>
         <h1>Your Load Snapshot</h1>
 
-        <p className="lead section">
-          {summary}
-        </p>
+        <p className="lead section">{summary}</p>
 
         <p className="subtle section--tight">
           Primary load: <strong>{result.dominant}</strong> ·{' '}
